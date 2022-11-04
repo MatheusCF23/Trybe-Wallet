@@ -1,9 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-import { getEmail } from '../redux/actions';
+import { Email } from '../redux/actions';
 
-const OBJ = {
+const stateObj = {
   name: '',
   email: '',
   password: '',
@@ -11,27 +11,27 @@ const OBJ = {
 };
 
 class Login extends React.Component {
-  state = { ...OBJ };
-
-  validation = () => {
-    const { email, password } = this.state;
-    const regex = /\S+@\S+\.\S+/;
-    const number = 6;
-    const PASSWORD = password.length >= number;
-    const EMAIL = regex.test(email);
-    const validate = EMAIL && PASSWORD;
-    this.setState({ disabled: !validate });
-  };
+  state = { ...stateObj };
 
   handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value }, () => this.validation());
+    this.setState({ [name]: value }, () => this.validateButton());
+  };
+
+  validateButton = () => {
+    const { email, password } = this.state;
+    const SIX = 6;
+    const regex = /\S+@\S+\.\S+/;
+    const checkEmail = regex.test(email);
+    const checkPassword = password.length >= SIX;
+    const validate = checkEmail && checkPassword;
+    this.setState({ disabled: !validate });
   };
 
   handleButton = () => {
     const { history, dispatch } = this.props;
     const { email } = this.state;
-    dispatch(getEmail(email));
+    dispatch(Email(email));
     history.push('/carteira');
   };
 
@@ -49,13 +49,14 @@ class Login extends React.Component {
           data-testid="email-input"
           type="text"
           name="email"
-          placeholder="email"
+          placeholder="Email"
           onChange={ this.handleChange }
         />
         <input
           data-testid="password-input"
+          type="password"
           name="password"
-          placeholder="password"
+          placeholder="Senha"
           onChange={ this.handleChange }
         />
         <button

@@ -1,23 +1,19 @@
 // Coloque aqui suas actions.
-export const GET_EMAIL = 'GET_EMAIL';
-export const GET_API = 'GET_API';
-export const GET_EXPENSES_API = 'GET_EXPENSES_API';
-export const GET_CONVERTED_VALUE = 'GET_CONVERTED_VALUE';
-export const DELETE_ITEM = 'DELETE_ITEM';
-export const CHANGE_TOTAL = 'CHANGE_TOTAL';
+export const EMAIL = 'EMAIL';
+export const USER_API = 'USER_API';
+export const USER_EXPENSES_API = 'USER_EXPENSES_API';
+export const USER_CONVERTED_VALUE = 'USER_CONVERTED_VALUE';
 
-export const getEmail = (payload) => ({ type: GET_EMAIL, payload });
-export const API = (payload) => ({ type: GET_API, payload });
-export const expensesApi = (payload) => ({ type: GET_EXPENSES_API, payload });
-export const getConvertedValue = (payload) => ({ type: GET_CONVERTED_VALUE, payload });
-export const deleteItem = (payload) => ({ type: DELETE_ITEM, payload });
-export const changeTotal = (payload) => ({ type: CHANGE_TOTAL, payload });
+export const Email = (payload) => ({ type: EMAIL, payload });
+export const api = (payload) => ({ type: USER_API, payload });
+export const expensesApi = (payload) => ({ type: USER_EXPENSES_API, payload });
+export const convertedValue = (payload) => ({ type: USER_CONVERTED_VALUE, payload });
 
-export const getFetch = () => async (api) => {
+export const getApi = () => async (element) => {
   try {
-    const RESPONSE = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const DATA = await RESPONSE.json();
-    api(API(DATA));
+    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const data = await request.json();
+    element(api(data));
   } catch (error) {
     throw new Error(error);
   }
