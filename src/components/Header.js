@@ -4,30 +4,32 @@ import { connect } from 'react-redux';
 
 class Header extends Component {
   render() {
-    const { email, getConvertion } = this.props;
+    const { email, convertedValue } = this.props;
+
     return (
       <div>
-        <p data-testid="email-field">
+        <h1 data-testid="email-field">
           { email }
-        </p>
-        <p data-testid="total-field">
-          {getConvertion.toFixed(2)}
-        </p>
-        <p data-testid="header-currency-field">
+        </h1>
+        <h2 data-testid="total-field">
+          { convertedValue.toFixed(2) }
+        </h2>
+        <h3 data-testid="header-currency-field">
           BRL
-        </p>
+        </h3>
       </div>
+
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
-  getConvertion: state.wallet.getConvertion,
+  convertedValue: state.wallet.convertedValue,
 });
 
 Header.propTypes = {
-  getConvertion: PropTypes.shape({
+  convertedValue: PropTypes.shape({
     toFixed: PropTypes.func,
   }),
   email: PropTypes.string,

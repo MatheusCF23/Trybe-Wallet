@@ -1,34 +1,34 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { USER_API, USER_EXPENSES_API, USER_CONVERTED_VALUE } from '../actions';
+import { GET_API, GET_EXPENSES_API, GET_CONVERTED_VALUE } from '../actions';
 
-const INITTIAL_STATE = {
+const INNITIAL_STATE = {
   currencies: [],
   expenses: [],
-  edit: false,
-  idEdit: 0,
-  getConvertion: 0,
+  editor: false,
+  idToEdit: 0,
+  convertedValue: 0,
 };
 
-const walletReducer = (state = INITTIAL_STATE, action) => {
+const reducerWallet = (state = INNITIAL_STATE, action) => {
   switch (action.type) {
-  case USER_API:
+  case GET_API:
     return {
       ...state,
       currencies: Object.keys(action.payload).filter((element) => element !== 'USDT'),
     };
-  case USER_EXPENSES_API:
+  case GET_EXPENSES_API:
     return {
       ...state,
-      expenses: action.payload,
+      expenses: [...state.expenses, action.payload],
     };
-  case USER_CONVERTED_VALUE:
+  case GET_CONVERTED_VALUE:
     return {
       ...state,
-      getConvertion: state.getConvertion + action.payload,
+      convertedValue: state.convertedValue + action.payload,
     };
   default:
     return state;
   }
 };
 
-export default walletReducer;
+export default reducerWallet;

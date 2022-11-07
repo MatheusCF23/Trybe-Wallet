@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getApi, expensesApi, convertedValue } from '../redux/actions';
+import { getApi, API, convertedValue } from '../redux/actions';
 
 const stateObj = {
   id: 0,
@@ -10,7 +10,7 @@ const stateObj = {
   currency: 'USD',
   method: 'Dinheiro',
   tag: 'Alimentação',
-  exchange: {},
+  exchangeRates: {},
 };
 
 class WalletForm extends Component {
@@ -21,26 +21,26 @@ class WalletForm extends Component {
     dispatch(getApi());
   }
 
-  handleClick = async () => {
-    const { dispatch } = this.props;
-    const { currency, exchange, value } = this.state;
-    const cotation = exchange[currency].ask;
-    const convertion = value * cotation;
-    dispatch(convertedValue(convertion));
-    dispatch(expensesApi(this.state));
-    this.setState((prev) => ({ id: prev.id + 1, description: '', value: '' }));
-  };
-
-  getExpenses = async () => {
-    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const data = await request.json();
-    delete data.USDT;
-    this.setState({ exchange: data }, this.handleClick);
-  };
-
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+  };
+
+  clickOn = async () => {
+    const { dispatch } = this.props;
+    const { currency, exchangeRates, value } = this.state;
+    const cotation = exchangeRates[currency].ask;
+    const convertion = value * cotation;
+    dispatch(convertedValue(convertion));
+    dispatch(API(this.state));
+    this.setState((prev) => ({ id: prev.id + 1, value: '', description: '' }));
+  };
+
+  expenses = async () => {
+    const RESPONSE = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const DATA = await RESPONSE.json();
+    delete DATA.USDT;
+    this.setState({ exchangeRates: DATA }, this.clickOn);
   };
 
   render() {
@@ -91,20 +91,22 @@ class WalletForm extends Component {
         </select>
         <select
           data-testid="tag-input"
+          name="tag"
           onChange={ this.handleChange }
           id=""
         >
-          <option value="Alimentação">Alimentação</option>
-          <option value="Lazer">Lazer</option>
-          <option value="Trabalho">Trabalho</option>
-          <option value="Transporte">Transporte</option>
-          <option value="Saúde">Saúde</option>
+          <option name="tag" value="Alimentação">Alimentação</option>
+          <option name="tag" value="Lazer">Lazer</option>
+          <option name="tag" value="Trabalho">Trabalho</option>
+          <option name="tag" value="Transporte">Transporte</option>
+          <option name="tag" value="Saúde">Saúde</option>
         </select>
         <button
           type="button"
-          onClick={ this.getExpenses }
+          onClick={ this.expenses }
         >
           Adicionar despesa
+
         </button>
       </div>
     );

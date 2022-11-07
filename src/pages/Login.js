@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Email } from '../redux/actions';
+import { getEmail } from '../redux/actions';
 
 const stateObj = {
   name: '',
@@ -13,26 +13,26 @@ const stateObj = {
 class Login extends React.Component {
   state = { ...stateObj };
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value }, () => this.validateButton());
-  };
-
-  validateButton = () => {
-    const { email, password } = this.state;
-    const SIX = 6;
-    const regex = /\S+@\S+\.\S+/;
-    const checkEmail = regex.test(email);
-    const checkPassword = password.length >= SIX;
-    const validate = checkEmail && checkPassword;
-    this.setState({ disabled: !validate });
-  };
-
   handleButton = () => {
     const { history, dispatch } = this.props;
     const { email } = this.state;
-    dispatch(Email(email));
+    dispatch(getEmail(email));
     history.push('/carteira');
+  };
+
+  buttonValid = () => {
+    const { email, password } = this.state;
+    const number = 6;
+    const cod = /\S+@\S+\.\S+/;
+    const emailCheck = cod.test(email);
+    const passwordCheck = password.length >= number;
+    const validate = emailCheck && passwordCheck;
+    this.setState({ disabled: !validate });
+  };
+
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value }, () => this.buttonValid());
   };
 
   render() {
@@ -65,6 +65,7 @@ class Login extends React.Component {
           onClick={ this.handleButton }
         >
           Entrar
+
         </button>
       </div>
     );

@@ -1,19 +1,18 @@
-// Coloque aqui suas actions.
 export const EMAIL = 'EMAIL';
-export const USER_API = 'USER_API';
-export const USER_EXPENSES_API = 'USER_EXPENSES_API';
-export const USER_CONVERTED_VALUE = 'USER_CONVERTED_VALUE';
+export const GET_EXPENSES_API = 'GET_EXPENSES_API';
+export const GET_API = 'GET_API';
+export const GET_CONVERTED_VALUE = 'GET_CONVERTED_VALUE';
 
-export const Email = (payload) => ({ type: EMAIL, payload });
-export const api = (payload) => ({ type: USER_API, payload });
-export const expensesApi = (payload) => ({ type: USER_EXPENSES_API, payload });
-export const convertedValue = (payload) => ({ type: USER_CONVERTED_VALUE, payload });
+export const getEmail = (payload) => ({ type: EMAIL, payload });
+export const response = (payload) => ({ type: GET_API, payload });
+export const API = (payload) => ({ type: GET_EXPENSES_API, payload });
+export const convertedValue = (payload) => ({ type: GET_CONVERTED_VALUE, payload });
 
-export const getApi = () => async (element) => {
+export const getApi = () => async (dispatch) => {
   try {
-    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const data = await request.json();
-    element(api(data));
+    const RESPONSE = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const DATA = await RESPONSE.json();
+    dispatch(response(DATA));
   } catch (error) {
     throw new Error(error);
   }
