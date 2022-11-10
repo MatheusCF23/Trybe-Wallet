@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import App from './App';
 import { renderWithRouterAndRedux } from './tests/helpers/renderWith';
 
-describe('Testes unitatios para os requisitos de 1 ao 4', () => {
+describe('Testes unitatios para os requisitos 5', () => {
   test('Testando entrar.', () => {
     renderWithRouterAndRedux(<App />);
     const btnInput = screen.getByRole('button', { name: 'Entrar' });

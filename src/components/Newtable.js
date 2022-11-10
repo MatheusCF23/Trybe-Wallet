@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { deleteItem, changeValue } from '../redux/actions';
 
 class Newtable extends Component {
+  handleDeleteBtn = () => {
+    const { expenses, dispatch } = this.props;
+    const { currency, exchangeRates, value } = expenses;
+    const cotation = exchangeRates[currency].ask;
+    const converted = value * cotation;
+    dispatch(deleteItem(expenses));
+    dispatch(changeValue(converted));
+  };
+
   render() {
     const { expenses } = this.props;
     const { currency } = expenses;
@@ -19,20 +29,26 @@ class Newtable extends Component {
         <td>{ask.toFixed(2)}</td>
         <td>{convertion.toFixed(2)}</td>
         <td>Real</td>
+        <td>
+          <button
+            data-testid="delete-btn"
+            type="button"
+            onClick={ this.handleDeleteBtn }
+          >
+            Delete
+          </button>
+        </td>
       </tr>
     );
   }
 }
 
-Newtable.propTypes = {
-  expenses: PropTypes.shape({
-    value: PropTypes.number,
-    description: PropTypes.string,
-    currency: PropTypes.string,
-    method: PropTypes.string,
-    tag: PropTypes.string,
-    exchangeRates: PropTypes.objectOf,
-  }).isRequired,
-};
+const mapStateToProps = (state) => ({
+  convertedValue: state.wallet.convertedValue,
+});
 
-export default Newtable;
+Newtable.propTypes = {
+
+}.isRequired;
+
+export default connect(mapStateToProps)(Newtable);

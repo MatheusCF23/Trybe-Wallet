@@ -12,7 +12,7 @@ class Header extends Component {
           { email }
         </h1>
         <h2 data-testid="total-field">
-          { convertedValue.toFixed(2) }
+          { convertedValue < 0 ? '0.00' : convertedValue.toFixed(2) }
         </h2>
         <h3 data-testid="header-currency-field">
           BRL
