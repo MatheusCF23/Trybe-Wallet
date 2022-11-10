@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getApi, API, convertedValue } from '../redux/actions';
 
-const stateObj = {
+const OBJ = {
   id: 0,
   value: '',
   description: '',
@@ -14,7 +14,7 @@ const stateObj = {
 };
 
 class WalletForm extends Component {
-  state = { ...stateObj };
+  state = { ...OBJ };
 
   componentDidMount() {
     const { dispatch } = this.props;
